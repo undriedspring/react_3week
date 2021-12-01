@@ -7,7 +7,7 @@ const Post = (props) => {
       <Grid>
         <Grid is_flex padding="16px">
           <Grid is_flex width="auto">
-            <Image shape="circle" src={props.src} />
+            <Image background-position="center" shape="circle" src={props.src} />
             <Text bold>{props.user_info.user_name}</Text>
           </Grid>
           <Text>{props.insert_dt}</Text>
@@ -16,7 +16,7 @@ const Post = (props) => {
           <Text>{props.contents}</Text>
         </Grid>
         <Grid>
-          <Image shape="rectangle" src={props.src} />
+          <Image shape="rectangle" src={props.image_url} />
         </Grid>
         <Grid padding="16px">
           <Text margin="0px" bold>

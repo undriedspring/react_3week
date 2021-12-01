@@ -7,6 +7,7 @@ const Image = (props) => {
     src: src,
     size: size,
   }
+
   if (shape === 'circle') {
     return <ImageCircle {...styles}></ImageCircle>
   }
@@ -34,6 +35,7 @@ const ImageCircle = styled.div`
 
   background-image: url('${(props) => props.src}');
   background-size: cover;
+  background-position: center;
   margin: 4px;
 `
 
@@ -48,6 +50,8 @@ const AspectInner = styled.div`
   overflow: hidden;
   background-image: url('${(props) => props.src}');
   background-size: cover;
+  width: 100%;
+  height: 100%;
 `
 
 export default Image
