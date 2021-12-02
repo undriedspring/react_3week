@@ -45,8 +45,6 @@ const getPostFB = () => {
         )
         post_list.push(post)
       })
-      console.log(post_list)
-
       dispatch(setPost(post_list))
     })
   }

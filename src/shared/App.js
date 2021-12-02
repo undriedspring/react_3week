@@ -10,6 +10,7 @@ import PostWrite from '../pages/PostWrite'
 import PostDetail from '../pages/PostDetail'
 import Header from '../components/Header'
 import Search from './Search'
+import Notification from '../pages/Notification'
 import { Grid, Button } from '../elements'
 import { useDispatch } from 'react-redux'
 import { actionCreators as userActions } from '../redux/modules/user'
@@ -35,8 +36,10 @@ function App() {
           <Route path="/login" exact component={Login} />
           <Route path="/signup" exact component={Signup} />
           <Route path="/write" exact component={PostWrite} />
+          <Route path="/write/:id" exact component={PostWrite} />
           <Route path="/post/:id" component={PostDetail} />
           <Route path="/search" exact component={Search} />
+          <Route path="/noti" exact component={Notification} />
         </ConnectedRouter>
       </Grid>
       <Permit>

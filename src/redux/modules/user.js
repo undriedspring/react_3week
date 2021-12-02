@@ -20,9 +20,9 @@ const initialState = {
   is_login: false,
 }
 
-const user_initial = {
-  user_name: '213am',
-}
+// const user_initial = {
+//   user_name: '213am',
+// }
 
 //Middleware
 const loginFB = (id, pwd) => {
@@ -32,7 +32,14 @@ const loginFB = (id, pwd) => {
         .signInWithEmailAndPassword(id, pwd)
         .then((user) => {
           console.log(user)
-          dispatch(setUser({ user_name: user.user.displayName, id: id, user_profile: '', uid: user.user.uid }))
+          dispatch(
+            setUser({
+              user_name: user.user.displayName,
+              id: id,
+              user_profile: '',
+              uid: user.user.uid,
+            })
+          )
           history.push('/')
         })
         .catch((error) => {
@@ -57,7 +64,14 @@ const signupFB = (id, pwd, user_name) => {
             displayName: user_name,
           })
           .then(() => {
-            dispatch(setUser({ user_name: user_name, id: id, user_profile: '', uid: user.user.uid }))
+            dispatch(
+              setUser({
+                user_name: user_name,
+                id: id,
+                user_profile: '',
+                uid: user.user.uid,
+              })
+            )
             history.push('/')
           })
           .catch((error) => {
