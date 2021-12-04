@@ -1,15 +1,19 @@
 import React from 'react'
 import { Grid, Image, Text, Button } from '../elements'
+import { useDispatch } from 'react-redux'
+import LikeButton from '../elements/LikeButton'
 import { history } from '../redux/configureStore'
-// import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder'
+import { actionCreators as postActions } from '../redux/modules/post'
 
 const Post = (props) => {
+  const dispatch = useDispatch()
+
   return (
     <React.Fragment>
       <Grid>
         <Grid is_flex padding="16px">
           <Grid is_flex width="auto">
-            <Image background-position="center" shape="circle" src={props.src} />
+            <Image shape="circle" src={props.src} />
             <Text bold>{props.user_info.user_name}</Text>
           </Grid>
           <Grid is_flex width="auto">
@@ -26,6 +30,18 @@ const Post = (props) => {
                 수정
               </Button>
             )}
+            {props.is_me && (
+              <Button
+                padding="7px"
+                width="auto"
+                margin="0px"
+                _onClick={() => {
+                  dispatch(postActions.deletePostFB({}))
+                }}
+              >
+                삭제
+              </Button>
+            )}
           </Grid>
         </Grid>
         <Grid padding="16px">
@@ -34,7 +50,11 @@ const Post = (props) => {
         <Grid>
           <Image shape="rectangle" src={props.image_url} />
         </Grid>
-        <Grid padding="16px">
+        <Grid padding="16px" is_flex>
+          <Grid width="auto" padding="10px">
+            <LikeButton />
+            <Text margin="1px -14px">좋아요 {props.like_cnt}회</Text>
+          </Grid>
           <Text margin="0px" bold>
             댓글 {props.comment_cnt}개
           </Text>

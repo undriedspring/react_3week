@@ -7,11 +7,13 @@ import { actionCreators as imageActions } from './image'
 const SET_POST = 'SET_POST'
 const ADD_POST = 'ADD_POST'
 const EDIT_POST = 'EDIT_POST'
+const DELETE_POST = 'DELETE_POST'
 const LOADING = 'LOADING'
 
 const setPost = createAction(SET_POST, (post_list, paging) => ({ post_list, paging }))
 const addPost = createAction(ADD_POST, (post) => ({ post }))
 const editPost = createAction(EDIT_POST, (post_id, post) => ({ post_id, post }))
+const deletePost = createAction(DELETE_POST, (post) => ({ post }))
 const loading = createAction(LOADING, (is_loading) => ({ is_loading }))
 
 const initialState = {
@@ -29,14 +31,39 @@ const initialPost = {
   image_url: 'http://newsimg.hankookilbo.com/2019/04/29/201904291390027161_3.jpg',
   contents: '',
   comment_cnt: 0,
+  like_cnt: 0,
   insert_dt: moment().format('YYYY-MM-DD HH:mm:ss'),
 }
+
+const deletePostFB = (post_id, post = {}) => {
+  return function (dispatch, getState, { history }) {
+    const _post_idx = getState().post.list.findIndex((p) => p.id === post_id)
+    const _post = getState().post.list[_post_idx]
+
+    const postDB = firestore.collection('post')
+
+    if (post_id === _post.post_id) {
+      postDB
+        .doc(post)
+        .deleteDoc(_post)
+        .then((doc) => {
+          dispatch(deletePost(post_id, _post.post_id))
+          history.replace('/')
+        })
+      return
+    } else {
+      return
+    }
+  }
+}
+
 const editPostFB = (post_id = null, post = {}) => {
   return function (dispatch, getState, { history }) {
     if (!post_id) {
       window.alert('게시물 정보가 없어요!')
       return
     }
+
     const _image = getState().image.preview
     const _post_idx = getState().post.list.findIndex((p) => p.id === post_id)
     const _post = getState().post.list[_post_idx]
@@ -60,7 +87,6 @@ const editPostFB = (post_id = null, post = {}) => {
         snapshot.ref
           .getDownloadURL()
           .then((url) => {
-            console.log(url)
             return url
           })
           .then((url) => {
@@ -199,12 +225,49 @@ const getPostFB = (start = null, size = 3) => {
   }
 }
 
+const getOnePostFB = (id) => {
+  return function (dispatch, getState, { history }) {
+    const postDB = firestore.collection('post')
+    postDB
+      .doc(id)
+      .get()
+      .then((doc) => {
+        let _post = doc.data()
+        let post = Object.keys(_post).reduce(
+          (acc, cur) => {
+            if (cur.indexOf('user_') !== -1) {
+              return {
+                ...acc,
+                user_info: { ...acc.user_info, [cur]: _post[cur] },
+              }
+            }
+            return { ...acc, [cur]: _post[cur] }
+          },
+          { id: doc.id, user_info: {} }
+        )
+        dispatch(setPost([post]))
+      })
+  }
+}
+
 export default handleActions(
   {
     [SET_POST]: (state, action) =>
       produce(state, (draft) => {
         draft.list.push(...action.payload.post_list)
-        draft.paging = action.payload.paging
+
+        draft.list = draft.list.reduce((acc, cur) => {
+          if (acc.findIndex((a) => a.id === cur.id) === -1) {
+            return [...acc, cur]
+          } else {
+            acc[acc.findIndex((a) => a.id === cur.id)] = cur
+            return acc
+          }
+        }, [])
+
+        if (action.payload.paging) {
+          draft.paging = action.payload.paging
+        }
         draft.is_loading = false
       }),
 
@@ -217,6 +280,7 @@ export default handleActions(
         let idx = draft.list.findIndex((p) => p.id === action.payload.post_id)
         draft.list[idx] = { ...draft.list[idx], ...action.payload.post }
       }),
+    [DELETE_POST]: (state, action) => produce(state, (draft) => {}),
     [LOADING]: (state, action) =>
       produce(state, (draft) => {
         draft.is_loading = action.payload.is_loading
@@ -228,9 +292,12 @@ export default handleActions(
 const actionCreators = {
   setPost,
   addPost,
+  editPost,
   getPostFB,
   addPostFB,
   editPostFB,
+  getOnePostFB,
+  deletePostFB,
 }
 
 export { actionCreators }

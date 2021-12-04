@@ -1,0 +1,15 @@
+.button {
+  cursor: pointer;
+  transition: transform 300ms ease;
+  font-size: 30px;
+  width: fit-content;
+}
+.red {
+  color: red;
+}
+h6 {
+  margin: 5px -7px;
+}
+.button:hover {
+  transform: scale(1.1);
+}

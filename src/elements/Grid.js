@@ -42,6 +42,7 @@ const GridBox = styled.div`
   ${(props) => (props.bg ? `background-color:${props.bg};` : '')}
   ${(props) => (props.is_flex ? `display:flex; align-items:center; justify-content: space-between;` : '')}
   ${(props) => (props.center ? `text-align:center;` : '')}
+  word-break:break-all;
 `
 
 export default Grid

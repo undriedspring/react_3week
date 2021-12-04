@@ -14,7 +14,7 @@ const PostList = (props) => {
   const paging = useSelector((state) => state.post.paging)
 
   React.useEffect(() => {
-    if (post_list.length === 0) {
+    if (post_list.length < 2) {
       dispatch(postActions.getPostFB())
     }
   }, [])
@@ -34,6 +34,8 @@ const PostList = (props) => {
               return (
                 <Grid
                   bg="#ffffff"
+                  margin="30px 30px 30px 30px"
+                  width="95%"
                   key={p.id}
                   _onClick={() => {
                     history.push(`/post/${p.id}`)
@@ -45,6 +47,9 @@ const PostList = (props) => {
             } else {
               return (
                 <Grid
+                  bg="#ffffff"
+                  margin="30px 30px 30px 30px"
+                  width="95%"
                   key={p.id}
                   _onClick={() => {
                     history.push(`/post/${p.id}`)

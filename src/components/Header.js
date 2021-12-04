@@ -23,14 +23,16 @@ const Header = (props) => {
             </Text>
           </Grid>
           <Grid is_flex>
-            <Button text="내정보"></Button>
+            <Button disabled="false" text="내정보"></Button>
             <Button
+              disabled="false"
               _onClick={() => {
                 history.push('/noti')
               }}
               text="알림"
             ></Button>
             <Button
+              disabled="false"
               text="로그아웃"
               _onClick={() => {
                 dispatch(userActions.logoutFB({}))
@@ -52,12 +54,14 @@ const Header = (props) => {
         </Grid>
         <Grid is_flex>
           <Button
+            disabled="false"
             text="로그인"
             _onClick={() => {
               history.push('/login')
             }}
           ></Button>
           <Button
+            disabled="false"
             text="회원가입"
             _onClick={() => {
               history.push('/signup')

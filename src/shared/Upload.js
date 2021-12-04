@@ -1,6 +1,6 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Button } from '../elements'
+import { Button, Text, Grid } from '../elements'
 import { storage } from './firebase'
 import { actionCreators as imageActions } from '../redux/modules/image'
 
@@ -27,8 +27,11 @@ const Upload = (props) => {
 
   return (
     <React.Fragment>
-      <input type="file" onChange={selectFile} ref={fileInput} disabled={is_uploading} />
-      <Button _onClick={uploadFB}>업로드 하기</Button>
+      <Grid padding="10px">
+        <Text size="20px">이미지 선택하기</Text>
+        <input type="file" onChange={selectFile} ref={fileInput} disabled={is_uploading} />
+        {/* <Button _onClick={uploadFB}>업로드 하기</Button> */}
+      </Grid>
     </React.Fragment>
   )
 }

@@ -9,8 +9,9 @@ const Login = (props) => {
   const dispatch = useDispatch()
   const [id, setId] = React.useState('')
   const [pwd, setPwd] = React.useState('')
+  const be_equipped = setId === '' || setPwd === '' ? true : false
 
-  const login = () => {
+  const login = (props) => {
     if (id === '' || pwd === '') {
       window.alert('아이디 혹은 비밀번호가 비어있습니다! 입력해주세요!')
       return
@@ -47,12 +48,24 @@ const Login = (props) => {
             }}
           />
         </Grid>
-        <Button
-          text="로그인하기"
-          _onClick={() => {
-            login()
-          }}
-        ></Button>
+        <Grid>
+          {be_equipped ? (
+            <Button
+              disabled
+              text="로그인하기"
+              _onClick={() => {
+                login()
+              }}
+            ></Button>
+          ) : (
+            <Button
+              text="로그인하기"
+              _onClick={() => {
+                login()
+              }}
+            ></Button>
+          )}
+        </Grid>
       </Grid>
     </React.Fragment>
   )
